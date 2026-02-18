@@ -1,6 +1,7 @@
 import requests
 import logging
 import os
+import spacy
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -8,16 +9,13 @@ load_dotenv()
 API_KEY = os.getenv("WEATHER_API_KEY")
 BASE_URL = "http://api.weatherapi.com/v1/current.json"
 
-KNOWN_COUNTRIES = [
-    "Ukraine", "Russia", "Israel", "Gaza", "China", "USA",
-    "France", "Germany", "UK", "Syria", "Iran", "India",
-    "Pakistan", "Turkey", "Brazil", "Australia", "Japan"
-]
+nlp = spacy.load("en_core_web_sm")
 
 def extract_location(headline):
-    for country in KNOWN_COUNTRIES:
-        if country.lower() in headline.lower():
-            return country
+    doc = nlp(headline)
+    for ent in doc.ents:
+        if ent.label_ in ("GPE", "LOC"):
+            return ent.text
     return None
 
 def get_weather(location):
