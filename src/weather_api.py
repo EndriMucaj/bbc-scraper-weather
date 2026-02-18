@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 API_KEY = os.getenv("WEATHER_API_KEY")
-BASE_URL = "http://api.weatherapi.com/v1/current.json"
+BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -21,21 +21,21 @@ def extract_location(headline):
 def get_weather(location):
     try:
         params = {
-            'key': API_KEY,
             'q': location,
-            'aqi': 'no'
+            'appid': API_KEY,
+            'units': 'metric'
         }
         response = requests.get(BASE_URL, params=params, timeout=10)
         response.raise_for_status()
 
         data = response.json()
         weather = {
-            'location': data['location']['name'],
-            'country': data['location']['country'],
-            'temp_c': data['current']['temp_c'],
-            'condition': data['current']['condition']['text'],
-            'humidity': data['current']['humidity'],
-            'wind_kph': data['current']['wind_kph']
+            'location': data['name'],
+            'country': data['sys']['country'],
+            'temp_c': data['main']['temp'],
+            'condition': data['weather'][0]['description'],
+            'humidity': data['main']['humidity'],
+            'wind_kph': round(data['wind']['speed'] * 3.6, 1)
         }
         logging.info(f"Moti u mor për: {location}")
         return weather
