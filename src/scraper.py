@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 import logging
 import os
 
-# Konfigurimi i logging
 logging.basicConfig(
     filename='logs/scraper.log',
     level=logging.INFO,
@@ -17,14 +16,12 @@ HEADERS = {
 BBC_URL = "https://www.bbc.com/news/world"
 
 def scrape_headlines():
-    """Nxjerr headlines dhe vendet e përmendura nga BBC News."""
     try:
         logging.info("Duke filluar scraping nga BBC...")
         response = requests.get(BBC_URL, headers=HEADERS, timeout=10)
         response.raise_for_status()
 
         soup = BeautifulSoup(response.text, 'html.parser')
-
         headlines = []
         tags = soup.find_all('h3')
 

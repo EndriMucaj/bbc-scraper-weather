@@ -17,7 +17,6 @@ logging.basicConfig(
 )
 
 def process_data():
-    """Bashkon headlines me të dhënat e motit dhe i ruan."""
     headlines = scrape_headlines()
     results = []
 
@@ -40,11 +39,10 @@ def process_data():
 
     save_csv(results)
     save_json(results)
-    print(f"✅ U procesuan {len(results)} headlines. Të dhënat u ruajtën.")
+    print(f"U procesuan {len(results)} headlines. Të dhënat u ruajtën.")
     return results
 
 def save_csv(data):
-    """Ruan të dhënat në CSV."""
     os.makedirs('data', exist_ok=True)
     if not data:
         return
@@ -55,7 +53,6 @@ def save_csv(data):
     logging.info(f"Të dhënat u ruajtën në {OUTPUT_CSV}")
 
 def save_json(data):
-    """Ruan të dhënat në JSON."""
     os.makedirs('data', exist_ok=True)
     with open(OUTPUT_JSON, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)

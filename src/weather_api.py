@@ -8,13 +8,6 @@ load_dotenv()
 API_KEY = os.getenv("WEATHER_API_KEY")
 BASE_URL = "http://api.weatherapi.com/v1/current.json"
 
-logging.basicConfig(
-    filename='logs/scraper.log',
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
-
-# Listë vendesh të njohura për të gjetur në headlines
 KNOWN_COUNTRIES = [
     "Ukraine", "Russia", "Israel", "Gaza", "China", "USA",
     "France", "Germany", "UK", "Syria", "Iran", "India",
@@ -22,14 +15,12 @@ KNOWN_COUNTRIES = [
 ]
 
 def extract_location(headline):
-    """Kërkon nëse headline përmend një vend të njohur."""
     for country in KNOWN_COUNTRIES:
         if country.lower() in headline.lower():
             return country
     return None
 
 def get_weather(location):
-    """Merr të dhënat e motit për një vendndodhje."""
     try:
         params = {
             'key': API_KEY,
